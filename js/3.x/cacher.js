@@ -6,7 +6,7 @@
  *
  * ======================================================================== */
 
-define([ 
+define([
     "dojo/_base/unload",
     "dojo/cookie",
     "dojo/json",
@@ -21,20 +21,26 @@ define([
 
     var autoLoad = true,
         autoSave = true;
+        tokenValidity = 1440;
 
     if (dojoConfig !== undefined) {
       var cacherConfig = dojoConfig["esriIdCacher"];
       if (cacherConfig !== undefined) {
-        if (cacherConfig.hasOwnProperty("autoLoad") && 
+        if (cacherConfig.hasOwnProperty("autoLoad") &&
             cacherConfig["autoLoad"] !== true) {
           autoLoad = false;
         }
-        if (cacherConfig.hasOwnProperty("autoSave") && 
+        if (cacherConfig.hasOwnProperty("autoSave") &&
             cacherConfig["autoSave"] !== true) {
           autoSave = false;
         }
+        if (cacherConfig.hasOwnProperty("tokenValidity") &&
+            cacherConfig["tokenValidity"] !== null){
+          tokenValidity = cacherConfig["tokenValidity"]
+        }
       }
     }
+    esriId.tokenValidity = tokenValidity;
 
     if (autoLoad) {
       _loadCredentials();
@@ -42,7 +48,7 @@ define([
 
     // store credentials/serverInfos before the page unloads
     if (autoSave) {
-      baseUnload.addOnUnload(_saveCredentials);      
+      baseUnload.addOnUnload(_saveCredentials);
     }
 
     function _loadCredentials() {

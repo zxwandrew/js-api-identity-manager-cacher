@@ -21,6 +21,7 @@ define([
 
     var autoLoad = true,
         autoSave = true;
+        tokenValidity = 1440;
 
     if (dojoConfig !== undefined) {
       var cacherConfig = dojoConfig["esriIdCacher"];
@@ -33,8 +34,13 @@ define([
             cacherConfig["autoSave"] !== true) {
           autoSave = false;
         }
+        if (cacherConfig.hasOwnProperty("tokenValidity") &&
+            cacherConfig["tokenValidity"] !== null){
+          tokenValidity = cacherConfig["tokenValidity"]
+        }
       }
     }
+    esriId.tokenValidity = tokenValidity;
 
     if (autoLoad) {
       _loadCredentials();
